@@ -9,7 +9,7 @@ const app = express();
 
 const users = [];
 
-app.get('/', function(req, res) {
+app.get('/users', function(req, res) {
     console.log('получен запрос на получение всех пользователей');
     res.send({users});
 });
