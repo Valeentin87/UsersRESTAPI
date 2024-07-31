@@ -60,8 +60,6 @@ app.get('/users/:id', (req, res) => {
 
 //4. Роут обновления данных о пользователе
 
-//app.use(express.json);
-
 app.put('/users/:id', (req, res) => {
     const user = users.find((user) => user.id === Number(req.params.id));
 
@@ -88,4 +86,18 @@ app.listen(3000, () => {
     console.log("Сервер запущен на порту 3000");
 });
 
+// 5. Роут удаления пользователя
 
+app.delete('/users/:id', (req, res) => {
+    const user = users.find((user) => user.id === Number(req.params.id));
+
+    if (user) {
+        const userIndex = users.indexOf(user);
+        users.splice(userIndex, 1);
+
+        res.send( {user});
+    } else {
+        res.status(404);
+        res.send({ user: null});
+    }
+});
