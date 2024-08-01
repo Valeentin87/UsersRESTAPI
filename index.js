@@ -10,12 +10,23 @@
 //     city: "Moscow"
 // }
 
+const fs = require('fs');
+
+const readUsers = function() {
+    
+    const allUsersRead = fs.readFileSync('./data_users.json', 'utf-8');
+    allUsersJSON = JSON.parse(allUsersRead);
+    //allUsersSTR = JSON.stringify(allUsersJSON);
+
+    return allUsersJSON.users;
+}
+
 const express = require('express');
 
 const app = express();
 
 
-const users = [];
+const users = readUsers();
 let uniqueID = 0;  // уникальный номер пользователя
 
 // 1. Роут получения всех пользователей Название роута GET/users
