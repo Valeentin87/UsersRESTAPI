@@ -100,9 +100,14 @@ app.get('/users/:id', (req, res) => {
 //4. Роут обновления данных о пользователе
 
 app.put('/users/:id', (req, res) => {
+    console.log(`получен запрос на изменение данных пользователя с id = ${req.params.id} `);
+    users = readUsers();
+
+    console.log("список пользователей до обновления: ");
+    console.log(users);
     const user = users.find((user) => user.id === Number(req.params.id));
 
-
+    
     if (user) {
         console.log(user);
         console.log(user.firstName);
@@ -111,9 +116,23 @@ app.put('/users/:id', (req, res) => {
         user.secondName = req.body.secondName;
         user.age = req.body.age;
         user.city = req.body.city;
+
+        users.forEach(item => {
+            if (item.id == req.params.id) {
+                users.pop();
+                users.push(user);
+            }
+        });
         
         console.log("Данные пользователя изменены ");
+        
         res.send({ user });
+
+        console.log("список пользователей после обновления: ");
+        console.log(users);
+        newDataUsers.users = users;
+        newDataString = JSON.stringify(newDataUsers);
+        fs.writeFileSync('./data_users.json', newDataString);
         
 
     }
