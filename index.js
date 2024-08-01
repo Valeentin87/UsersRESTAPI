@@ -21,6 +21,21 @@ const readUsers = function() {
     return allUsersJSON.users;
 }
 
+const getAllUniqId = function() {
+    let allUniqId = []
+    userList = readUsers();
+    
+        Object.values(userList).forEach(user => {
+            console.log(user);
+            user.forEach(element => {
+                allUniqId.push(element.id);
+                console.log(allUniqId);
+            });
+        });
+            
+    return allUniqId;
+}
+
 const express = require('express');
 
 const app = express();
@@ -31,6 +46,7 @@ let newDataUsers = {"users": null};
 let newDataString = null;
 let users = [];
 let uniqueID = 0;  // уникальный номер пользователя
+let allUniqId = [];
 
 // 1. Роут получения всех пользователей Название роута GET/users
 app.get('/users', function(req, res) {
@@ -58,9 +74,6 @@ app.post('/users', (req, res) => {
     newDataUsers.users = users;
     newDataString = JSON.stringify(newDataUsers);
     fs.writeFileSync('./data_users.json', newDataString);
-
-
-
     
     res.send({
         id: uniqueID,
@@ -78,7 +91,7 @@ app.get('/users/:id', (req, res) => {
         res.send({ user });
     }
     else {
-        console.log("Пользователь не найден!!!");
+        console.log(`Пользователь с идентификатором ${req.params.id} не найден!!!`);
         res.status(404);
         res.send({ user: null });
     }
@@ -105,7 +118,7 @@ app.put('/users/:id', (req, res) => {
 
     }
     else {
-        console.log('Произошла ошибка! ');
+        console.log(`Пользователь с идентификатором ${req.params.id} не найден!!!`);
         res.status(404);
         res.send({user:null});
     }
