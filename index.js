@@ -25,12 +25,16 @@ const express = require('express');
 
 const app = express();
 
+let newUsers = [];
 
-const users = readUsers();
+let newDataUsers = {"users": null};
+let newDataString = null;
+let users = [];
 let uniqueID = 0;  // уникальный номер пользователя
 
 // 1. Роут получения всех пользователей Название роута GET/users
 app.get('/users', function(req, res) {
+    users = readUsers();
     console.log('получен запрос на получение всех пользователей');
     res.send({users});
 });
@@ -40,12 +44,23 @@ app.get('/users', function(req, res) {
 app.use(express.json());
 
 app.post('/users', (req, res) => {
+
+    users = readUsers();
+
     uniqueID += 1;
     users.push( {
         id: uniqueID,
         ...req.body
     });
-    console.log('получен запрос на создание нового пользователя', req.body);
+    console.log('новый пользователь добавлен...', req.body);
+
+    //console.log(users);
+    newDataUsers.users = users;
+    newDataString = JSON.stringify(newDataUsers);
+    fs.writeFileSync('./data_users.json', newDataString);
+
+
+
     
     res.send({
         id: uniqueID,
@@ -74,6 +89,7 @@ app.get('/users/:id', (req, res) => {
 app.put('/users/:id', (req, res) => {
     const user = users.find((user) => user.id === Number(req.params.id));
 
+
     if (user) {
         console.log(user);
         console.log(user.firstName);
@@ -85,6 +101,8 @@ app.put('/users/:id', (req, res) => {
         
         console.log("Данные пользователя изменены ");
         res.send({ user });
+        
+
     }
     else {
         console.log('Произошла ошибка! ');

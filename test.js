@@ -18,7 +18,9 @@ const user1 = {
 ///////////////////////////////////////////////////
 
 
-user_list = []
+userList = []
+
+
 
 const readUsers = function() {
     
@@ -27,8 +29,28 @@ const readUsers = function() {
     return allUsers;
 }
 
-user_list = readUsers();
 
-Object.values(user_list).forEach(user => {
-    console.log(`объект: `, user);
-});
+
+
+// получение уникального идентификатора пользователя
+
+
+const getAllUniqId = function() {
+    let allUniqId = []
+    userList = readUsers();
+    
+        Object.values(userList).forEach(user => {
+            console.log(user);
+            user.forEach(element => {
+                allUniqId.push(element.id);
+                console.log(allUniqId);
+            });
+        });
+            
+    return allUniqId;
+}
+
+allId = getAllUniqId();
+console.log(allId);
+
+
